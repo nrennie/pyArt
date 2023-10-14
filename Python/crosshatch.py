@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import random
 from itertools import product
+import matplotlib.colors as mcolors
 
 # Function to generate single square of data
 def crosshatch_square(s, n_lines, line_overlap, line_slope, line_col, x_start, y_start):
@@ -37,12 +38,17 @@ def crosshatch_square(s, n_lines, line_overlap, line_slope, line_col, x_start, y
   return plot_data
     
 # Function to generate grid
-def crosshatch(n_x, n_y, n_lines, line_overlap, line_slope, col_palette, bg_col, linewidth, s):
+def crosshatch(n_x, n_y, n_lines, line_overlap, line_slope, col_palette, bg_col, linewidth, interpolate, s):
   # generate data
   random.seed(s)
   grid_product = product(list(range(n_x)), list(range(n_y)))
   grid_data = pd.DataFrame(grid_product, columns=['x_start', 'y_start'])
-  grid_data['line_col'] = random.choices(col_palette, k=n_x*n_y)
+  if interpolate:
+    cmap = mcolors.LinearSegmentedColormap.from_list('custom_cmap', col_palette, N=n_x*n_y)
+    cmap_vec = [mcolors.to_hex(cmap(i)) for i in range(n_x*n_y)]
+    grid_data['line_col'] = random.sample(cmap_vec, k=n_x*n_y)
+  else:
+    grid_data['line_col'] = random.choices(col_palette, k=n_x*n_y)
   all_data = pd.DataFrame()
   for i in range(n_x*n_y):
     i_data = crosshatch_square(s=i, n_lines=n_lines, line_overlap=line_overlap, line_slope=line_slope, line_col=grid_data['line_col'][i], x_start=grid_data['x_start'][i], y_start=grid_data['y_start'][i])
@@ -67,4 +73,6 @@ def crosshatch(n_x, n_y, n_lines, line_overlap, line_slope, col_palette, bg_col,
   return p
 
 # Example
-crosshatch(n_x=10, n_y=10, n_lines=50, line_overlap=0.2, line_slope=0.2, col_palette=["#413C58", "#D1495B", "#EDAE49", "#00798C", "#003D5B"], bg_col="#FAFAFA", linewidth=0.1, s=123)
+res = crosshatch(n_x=10, n_y=10, n_lines=50, line_overlap=0.2, line_slope=0.2, col_palette=["#413C58", "#D1495B", "#EDAE49", "#00798C", "#003D5B"], bg_col="#121212", linewidth=0.1, interpolate=True, s=123)
+
+pn.ggsave(res, filename="Images/crosshatch.png", height=4, width=4, dpi=300)
