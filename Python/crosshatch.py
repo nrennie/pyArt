@@ -7,6 +7,7 @@ import matplotlib.colors as mcolors
 
 # Function to generate single square of data
 def crosshatch_square(s, n_lines, line_overlap, line_slope, line_col, x_start, y_start):
+  """Generates data for a single crosshatched square."""
   # generate data
   random.seed(s)
   # vertical lines
@@ -39,6 +40,7 @@ def crosshatch_square(s, n_lines, line_overlap, line_slope, line_col, x_start, y
     
 # Function to generate grid
 def crosshatch(n_x, n_y, n_lines, line_overlap, line_slope, col_palette, bg_col, linewidth, interpolate, s):
+  """Generates grid of crosshatched squares."""
   # generate data
   random.seed(s)
   grid_product = product(list(range(n_x)), list(range(n_y)))
