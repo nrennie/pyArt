@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.colors as mcolors
 
 def nexus(n_x, max_y, size, linewidth, bg_col, col_palette, s):
+  """Generates plot of lines and points."""
   # generate data
   random.seed(s)
   max_y = max_y + 1
