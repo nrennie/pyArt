@@ -22,15 +22,9 @@ def nexus(n_x, max_y, size, linewidth, bg_col, col_palette, s):
   cmap=mcolors.LinearSegmentedColormap.from_list('custom_cmap', col_palette, N=len(plot_data.index))
   plot_data['col']=[mcolors.to_hex(cmap(i)) for i in range(len(plot_data.index))]
   # plot data
-  p = (pn.ggplot(plot_data) +
-    pn.geom_line(
-      mapping=pn.aes(x="x", y="y", group="x", colour="col"),
-      size=linewidth
-    ) +
-    pn.geom_point(
-      mapping=pn.aes(x="x", y="y", colour="col"),
-      size=size
-    ) +
+  p = (pn.ggplot(data=plot_data, mapping=pn.aes(x="x", y="y", group="x", colour="col")) +
+    pn.geom_line(size=linewidth) +
+    pn.geom_point(size=size) +
     pn.scale_colour_identity() +
     pn.theme_void() +
     pn.theme(plot_background=pn.element_rect(fill=bg_col, colour=bg_col), panel_background=pn.element_rect(fill=bg_col, colour=bg_col)))
