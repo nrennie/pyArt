@@ -27,5 +27,5 @@ def nexus(n_x, max_y, size, linewidth, bg_col, col_palette, s):
     pn.geom_point(size=size) +
     pn.scale_colour_identity() +
     pn.theme_void() +
-    pn.theme(plot_background=pn.element_rect(fill=bg_col, colour=bg_col), panel_background=pn.element_rect(fill=bg_col, colour=bg_col)))
+    pn.theme(plot_background=pn.element_rect(fill=bg_col, colour=bg_col)))
   return p
